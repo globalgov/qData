@@ -64,11 +64,10 @@ standardise_dates <- standardize_dates <- function(...){
   
   dates <- lubridate::as_date(dates)
   
-  invisible(cbind(dates, ranged_dates))
+  dates <- invisible(cbind(dates, ranged_dates))
   
   dates
-  
-  invisible(ranged_dates)
+
 }
 
 # Helper functions for standardise_dates()
