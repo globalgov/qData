@@ -67,12 +67,18 @@ test_that("standardise_dates() treats vector of dates correctly", {
                                                                "1656-07-17", NA, "1867-04-29"))
 })
  
-# test_that("standardise_dates() treats special dates format correctly", {
-#   dates5 <- data.frame(date = c("Sep 12, 2009", "Oct 1, 2019", "Nov 13, 1998", "NA", "May 13, 2003"))
-#   expect_equal(as.character(standardise_dates(dates5$date)), c("2009-09-12", "2019-10-01", "1998-11-13", NA, "2003-05-13"))
-# })
-# 
-# # test_that("standardise_dates() treats inconsistent date format correctly", {
-# #  dates6 <- data.frame(date = c("30/4/1990", "NA", "2010-12-30", "Obsolete?", "2010-00-00", "2599-01-01"))
-# #  expect_equal(as.character(standardise_dates(dates6$date)), c("1990-04-30", NA, "2010-12-30", NA, "2010-01-01", "9999-12-31"))
-# # }) #tofix
+test_that("standardise_dates() treats special dates format correctly", {
+  dates5 <- data.frame(date = c("Sep 12, 2009", "Oct 1, 2019", "Nov 13, 1998", "NA", "May 13, 2003"))
+  expect_equal(as.character(standardise_dates(dates5$date)), c("2009-09-12", "2019-10-01", "1998-11-13", "", "2003-05-13"))
+})
+
+test_that("standardise_dates() treats inconsistent date format correctly", {
+ dates6 <- data.frame(date = c("30/4/1990", "NA", "2010-12-30", "Obsolete?", "2010-00-00", "2599-01-01"))
+ expect_equal(as.character(standardise_dates(dates6$date)), c("1990-04-30", "", "2010-12-30", "Obsolete?", "2010-01-01:2010-12-31", "9999-12-31"))
+})
+
+test_that("standardise_dates() treats inconsistent date format correctly", {
+  dates6 <- data.frame(date = c("30/4/1990", "NA", "2010-12-30", "Obsolete?", "2010-00-00", "2599-01-01"))
+  sdate <- standardise_dates(dates6$date)
+  expect_equal(as.character(resolve_dates(sdate, argument = "min")), c("1990-04-30", NA, "2010-12-30", NA, "2010-01-01", "9999-12-31"))
+})

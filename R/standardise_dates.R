@@ -81,6 +81,7 @@ standardise_date_input <- function(dates){
   }
   
   dates <- stringr::str_replace_all (dates, "^NA$", "") # makes NAs will not create errors
+  #todo: fix how NAs are reported and stanrdadize how missing variables are treated
   dates <- stringr::str_remove_all(dates, "(0000-00-00|00-00-0000|00-00-00)") # standardising null dates
   dates <- stringr::str_replace_all(dates, "\\.", "-") # standardising separaters
   dates <- stringr::str_replace_all(dates, "\\/", "-") # standardising separaters
@@ -246,12 +247,13 @@ treat_range_dates <- function(dates){
 
 #' Resolve Date Ranges
 #'
-#' @details 
+#' @details This function resolves ranged dates created with `standardise_dates()`
+#' by the choice argument of minimum, maximun or mean dates.
 #' @param dates Ranged dates variable returned by `standardise_dates()`
 #' @param argument How do you want the range to be solved?
 #' @import lubridate
 #' @import stringr
-#' @return A date column
+#' @return a date column
 #' @examples
 #' @export
 resolve_dates <- function(dates, argument = c("mean", "min", "max")) {
